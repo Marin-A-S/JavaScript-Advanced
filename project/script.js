@@ -6,9 +6,24 @@ const goods = [
   { title: 'Sparrow', price: 175, img: 'images/Sparrow.jpg' },
 ];
 
+const BASE_URL = 'https://raw.githubusercontent.com/Marin-A-S/online-store-api/lesson-3/responses';
+const GOODS = `${BASE_URL}/catalogData.json`;
+const GOODS_BASKET = `${BASE_URL}/getBasket.json`;
+
+function service(url, callback) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', url)
+  xhr.send();
+
+  const loadHandler = () => {
+    callback(JSON.parse(xhr.response))
+  }
+  xhr.onload = loadHandler;
+}
+
 class GoodsItem {
-  constructor({ title, price, img }) {
-    this.title = title;
+  constructor({ product_name, price, img }) {
+    this.product_name = product_name;
     this.price = price;
     this.img = img;
   }
@@ -16,8 +31,8 @@ class GoodsItem {
   render() {
     return `
     <div class="goods-item">
-      <h3>${this.title}</h3>
-      <img src="${this.img}" alt="Product image">
+      <h3>${this.product_name}</h3>
+      <img src="images/${this.product_name}.jpg" alt="Product image">
       <p>${this.price} &#8381;</p>
     </div>
   `;
@@ -27,8 +42,11 @@ class GoodsItem {
 class GoodsList {
   items = [];
 
-  fetchGoods() {
-    this.items = goods;
+  fetchGoods(callback) {
+    service(GOODS, (data) => {
+      this.items = data;
+      callback()
+    });
   }
 
   calculatePrice() {
@@ -45,6 +63,20 @@ class GoodsList {
   }
 }
 
+class BasketGoodsList {
+  items = [];
+  fetchGoods() {
+    service(GOODS_BASKET, (data) => {
+      this.items = data.contents;
+    });
+  }
+}
+
 const goodsList = new GoodsList();
-goodsList.fetchGoods();
-goodsList.render();
+goodsList.fetchGoods(() => {
+  goodsList.render();
+  goodsList.calculatePrice();
+});
+
+const basketGoodsList = new BasketGoodsList();
+basketGoodsList.fetchGoods();
