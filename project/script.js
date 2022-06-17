@@ -10,15 +10,8 @@ const BASE_URL = 'https://raw.githubusercontent.com/Marin-A-S/online-store-api/l
 const GOODS = `${BASE_URL}/catalogData.json`;
 const GOODS_BASKET = `${BASE_URL}/getBasket.json`;
 
-function service(url, callback) {
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', url)
-  xhr.send();
-
-  const loadHandler = () => {
-    callback(JSON.parse(xhr.response))
-  }
-  xhr.onload = loadHandler;
+function service(url) {
+  return fetch(url).then((res) => res.json())
 }
 
 class GoodsItem {
@@ -41,22 +34,34 @@ class GoodsItem {
 
 class GoodsList {
   items = [];
+  filteredItems = [];
 
-  fetchGoods(callback) {
-    service(GOODS, (data) => {
-      this.items = data;
-      callback()
+  fetchGoods() {
+    return new Promise((resolve) =>
+      service(GOODS).then((data) => {
+        this.items = data;
+        this.filteredItems = data;
+        resolve();
+      })).then(() => {
+        this.render();
+        this.calculatePrice();
+      });
+  }
+
+  filterItems(value) {
+    this.filteredItems = this.items.filter(({ product_name }) => {
+      return product_name.match(new RegExp(value, 'gui'));
     });
   }
 
   calculatePrice() {
-    return this.items.reduce((prev, { price }) => prev + price, 0)
+    return this.items.reduce((prev, { price }) => prev + price, 0);
   }
 
   render() {
-    const goods = this.items.map(item => {
+    const goods = this.filteredItems.map(item => {
       const goodItem = new GoodsItem(item);
-      return goodItem.render()
+      return goodItem.render();
     }).join('');
 
     document.querySelector('.goods-list').innerHTML = goods;
@@ -80,3 +85,9 @@ goodsList.fetchGoods(() => {
 
 const basketGoodsList = new BasketGoodsList();
 basketGoodsList.fetchGoods();
+
+document.querySelector('.search-button').addEventListener('click', () => {
+  const value = document.querySelector('.goods-search').value;
+  goodsList.filterItems(value);
+  goodsList.render();
+});
