@@ -132,6 +132,32 @@ header {
     }
 }
 
+main {
+    position: relative;
+
+    .cart-window {
+        width: 350px;
+        height: 400px;
+        background-color: white;
+        border: 2px solid $primary-color;
+        border-radius: 20px;
+        position: absolute;
+        right: 0px;
+
+        .goods-item {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            img {
+                width: 245px;
+            }
+        }
+    }
+}
+
 .goods-list {
     display: grid;
     grid-template-columns: repeat(3, minmax(150px, 1fr));

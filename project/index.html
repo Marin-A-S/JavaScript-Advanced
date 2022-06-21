@@ -7,26 +7,49 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
    <title>BIRD FIGURINES SHOP</title>
    <link rel="stylesheet" href="style.css" />
+   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+   <script src="script.js"></script>
 </head>
 
 <body>
-   <header class="container">
-      <div class="header_left">
-         <img src="images/logo_owl.png" alt="shop logo" />
-         <span>BIRD FIGURINES SHOP</span>
-      </div>
-      <div class="header_right">
-         <form class="search-form" action="#">
-            <input type="text" class="goods-search" placeholder="Enter text here">
-            <button class="search-button" type="button">SEARCH</button>
-         </form>
-         <button class="cart-button" type="button">SHOPPING CART</button>
-      </div>
-   </header>
-   <main>
-      <div class="goods-list container"></div>
-   </main>
-   <script src="script.js"></script>
+   <div id="root">
+      <header class="container">
+         <div class="header_left">
+            <img src="images/logo_owl.png" alt="shop logo" />
+            <span>BIRD FIGURINES SHOP</span>
+         </div>
+         <div class="header_right">
+            <form class="search-form" action="#">
+               <input type="text" class="goods-search"
+                  placeholder="Enter text here" v-model="searchValue">
+               <button class="search-button" type="button" v-on:click="filterItems">
+                  SEARCH
+               </button>
+            </form>
+            <button class="cart-button" type="button" v-on:click="cartVisibilityChange">
+               SHOPPING CART
+            </button>
+         </div>
+      </header>
+      <main>
+         <div v-if="isCartVisible" class="cart-window">
+            <div class="cart-list">
+               <div class="goods-item">
+                  <h3>Product_name</h3>
+                  <img src="images/Eagle.jpg" alt="Product image">
+                  <p>Price</p>
+               </div>
+            </div>
+         </div>
+         <div class="goods-list container">
+            <div class="goods-item" v-for="item in filteredItems">
+               <h3>{{ item.product_name }}</h3>
+               <img src="images/Duck.jpg" alt="Product image">
+               <p>{{ item.price }}&#8381;</p>
+            </div>
+         </div>
+      </main>
+   </div>
 </body>
 
 </html>

@@ -158,6 +158,41 @@ header .cart-button:hover {
   cursor: pointer;
 }
 
+main {
+  position: relative;
+}
+
+main .cart-window {
+  width: 350px;
+  height: 400px;
+  background-color: white;
+  border: 2px solid maroon;
+  border-radius: 20px;
+  position: absolute;
+  right: 0px;
+}
+
+main .cart-window .goods-item {
+  margin-top: 25px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+main .cart-window .goods-item img {
+  width: 245px;
+}
+
 .goods-list {
   display: -ms-grid;
   display: grid;
