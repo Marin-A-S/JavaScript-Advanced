@@ -19,35 +19,19 @@
             <span>BIRD FIGURINES SHOP</span>
          </div>
          <div class="header_right">
-            <form class="search-form" action="#">
-               <input type="text" class="goods-search"
-                  placeholder="Enter text here" v-model="searchValue">
-               <button class="search-button" type="button" v-on:click="filterItems">
-                  SEARCH
-               </button>
-            </form>
-            <button class="cart-button" type="button" v-on:click="cartVisibilityChange">
+            <search-bar class="goods-search" v-model="searchValue"
+               placeholder="Enter text here"></search-bar>
+            <custom-button class="cart-button" v-on:click="cartVisibilityChange">
                SHOPPING CART
-            </button>
+            </custom-button>
          </div>
       </header>
-      <main>
-         <div v-if="isCartVisible" class="cart-window">
-            <div class="cart-list">
-               <div class="goods-item">
-                  <h3>Product_name</h3>
-                  <img src="images/Eagle.jpg" alt="Product image">
-                  <p>Price</p>
-               </div>
-            </div>
+      <main class="container">
+         <cart v-if="isCartVisible" v-on:close="cartVisibilityChange"></cart>
+         <div class="goods-list" v-if="filteredItems.length">
+            <good v-for="item in filteredItems" :item="item"></good>
          </div>
-         <div class="goods-list container">
-            <div class="goods-item" v-for="item in filteredItems">
-               <h3>{{ item.product_name }}</h3>
-               <img src="images/Duck.jpg" alt="Product image">
-               <p>{{ item.price }}&#8381;</p>
-            </div>
-         </div>
+         <div class="no-data" v-else>No data</div>
       </main>
    </div>
 </body>

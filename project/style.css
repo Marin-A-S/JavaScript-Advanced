@@ -65,77 +65,44 @@ header .header_right {
   }
 }
 
-header .header_right .search-form {
-  max-width: 222px;
-  height: 36px;
-  margin-left: 25px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-
-header .header_right .search-form input {
+header .header_right .goods-search {
   max-width: 136px;
   background-color: white;
-  padding: 6px 22px;
+  padding: 6px 18px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   border: 2px solid maroon;
-  border-top-left-radius: 18px;
-  border-bottom-left-radius: 18px;
+  border-radius: 18px;
   font-family: inherit;
 }
 
 @media (max-width: 375px) {
-  header .header_right .search-form input {
+  header .header_right .goods-search {
     width: 56%;
   }
 }
 
-header .header_right .search-form input::-webkit-input-placeholder {
+header .header_right .goods-search::-webkit-input-placeholder {
   color: #222224;
   opacity: 0.67;
 }
 
-header .header_right .search-form input::-moz-placeholder {
+header .header_right .goods-search::-moz-placeholder {
   color: #222224;
   opacity: 0.67;
 }
 
-header .header_right .search-form input:-ms-input-placeholder {
+header .header_right .goods-search:-ms-input-placeholder {
   color: #222224;
   opacity: 0.67;
 }
 
-header .header_right .search-form input:-moz-placeholder {
+header .header_right .goods-search:-moz-placeholder {
   color: #222224;
   opacity: 0.67;
 }
 
-header .header_right .search-form button {
-  width: 82px;
-  color: white;
-  font-family: inherit;
-  background-color: maroon;
-  font-size: 0.9em;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  border: 2px solid maroon;
-  border-top-right-radius: 18px;
-  border-bottom-right-radius: 18px;
-  padding-right: 2px;
-  cursor: pointer;
-}
-
-header .header_right .search-form button:hover {
-  background: #980000;
-  cursor: pointer;
-}
-
-header .cart-button {
+header .header_right .cart-button {
   width: 142px;
   margin-left: 25px;
   border: 2px solid maroon;
@@ -148,12 +115,12 @@ header .cart-button {
 }
 
 @media (max-width: 880px) {
-  header .cart-button {
+  header .header_right .cart-button {
     margin-bottom: 15px;
   }
 }
 
-header .cart-button:hover {
+header .header_right .cart-button:hover {
   background: #980000;
   cursor: pointer;
 }
@@ -164,16 +131,28 @@ main {
 
 main .cart-window {
   width: 350px;
-  height: 400px;
+  height: 410px;
   background-color: white;
   border: 2px solid maroon;
-  border-radius: 20px;
+  border-radius: 18px;
   position: absolute;
   right: 0px;
+  top: -35px;
+  margin-right: 35px;
 }
 
-main .cart-window .goods-item {
-  margin-top: 25px;
+@media (max-width: 880px) {
+  main .cart-window {
+    margin-right: 20px;
+  }
+}
+
+main .cart-window .cart-list {
+  position: relative;
+}
+
+main .cart-window .cart-list .goods-item {
+  margin-top: 40px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -189,11 +168,30 @@ main .cart-window .goods-item {
           flex-direction: column;
 }
 
-main .cart-window .goods-item img {
+main .cart-window .cart-list .goods-item img {
   width: 245px;
 }
 
-.goods-list {
+main .cart-window .cart-list-close {
+  position: absolute;
+  top: -25px;
+  right: 15px;
+  border: 2px solid maroon;
+  font-size: 0.9em;
+  font-weight: 400;
+  color: white;
+  background-color: maroon;
+  text-align: center;
+  padding: 1px 7px 2px;
+  border-radius: 18px;
+}
+
+main .cart-window .cart-list-close:hover {
+  background: #980000;
+  cursor: pointer;
+}
+
+main .goods-list {
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: (minmax(150px, 1fr))[3];
@@ -204,16 +202,26 @@ main .cart-window .goods-item img {
   margin-bottom: 25px;
 }
 
-.goods-list .goods-item {
+main .goods-list .goods-item {
   margin: 0 auto;
 }
 
-.goods-list .goods-item img {
+main .goods-list .goods-item img {
   border: 1px solid transparent;
   border-top-left-radius: 0;
   border-top-right-radius: 25px;
   border-bottom-left-radius: 25px;
   border-bottom-right-radius: 0px;
   max-width: 100%;
+}
+
+main .no-data {
+  font-size: 1.5em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 /*# sourceMappingURL=style.css.map */
