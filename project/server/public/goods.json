@@ -1,0 +1,27 @@
+[
+  {
+    "id_product": 101,
+    "product_name": "Duck",
+    "price": 240
+  },
+  {
+    "id_product": 102,
+    "product_name": "Eagle",
+    "price": 320
+  },
+  {
+    "id_product": 103,
+    "product_name": "Owl",
+    "price": 295
+  },
+  {
+    "id_product": 104,
+    "product_name": "Peafowl",
+    "price": 200
+  },
+  {
+    "id_product": 105,
+    "product_name": "Sparrow",
+    "price": 175
+  }
+]

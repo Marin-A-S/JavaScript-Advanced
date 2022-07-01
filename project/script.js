@@ -1,6 +1,6 @@
-const BASE_URL = 'https://raw.githubusercontent.com/Marin-A-S/online-store-api/lesson-3/responses';
-const GOODS = `${BASE_URL}/catalogData.json`;
-const GOODS_BASKET = `${BASE_URL}/getBasket.json`;
+const BASE_URL = 'http://localhost:8000/';
+const GOODS = `${BASE_URL}goods.json`;
+const GOODS_CART = `${BASE_URL}cart`;
 
 function service(url) {
   return fetch(url).then((res) => res.json())
@@ -13,20 +13,47 @@ window.onload = () => {
     `
   })
   Vue.component('cart', {
+    data() {
+      return {
+        cartGoodsItems: []
+      }
+    },
+    props: {
+      cartList: Array,
+      overallPrice: Number,
+    },
     template: `
       <div class="cart-window">
+        <div class="cart-header">
+          YOUR SHOPPING CART
+        </div>
+
         <div class="cart-list">
           <div class="goods-item">
-            <h3>Product_name</h3>
-            <img src="images/Eagle.jpg" alt="Product image">
-            <p>Price</p>
+            <div>Product name</div>
+            <div>Quantity, pcs</div>
+            <div>Price per piece</div>
+            <div>Total price</div>
           </div>
+
+          <good v-for="item in this.cartList" :item="item"></good>
+
+          <div class="cart-result">
+            Overall price: {{ this.overallPrice }}&#8381
+          </div>
+
           <div class="cart-list-close" v-on:click="$emit('close')">
             CLOSE
           </div>
         </div>
       </div>
-    `
+    `,
+
+    mounted() {
+      service(GOODS_CART).then((data) => {
+        this.cartGoodsItems = data
+      })
+    }
   })
   Vue.component('good', {
     props: [
@@ -34,9 +61,18 @@ window.onload = () => {
     ],    
     template: `
       <div class="goods-item">
-         <h3>{{ item.product_name }}</h3>
-         <img src="images/Duck.jpg" alt="Product image">
-         <p>{{ item.price }}&#8381;</p>
+        <div>{{ item.product_name }}</div>
+        <div class="quantity">
+          <button><img src="cart-icon-minus.png" title="Decrease quantity"
+            alt="Decrease quantity">
+          </button>
+          <div>{{ item.quantity }}</div>
+          <button><img src="cart-icon-plus.png" title="Increase quantity"
+            alt="Increase quantity">
+          </button>
+        </div>
+        <div class="price">{{ item.price }}&#8381</div>
+        <div class="price-total">&#36;{{ item.quantity * item.price }}</div>
       </div>
     `
   })
