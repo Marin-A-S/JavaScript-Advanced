@@ -16,29 +16,86 @@ const readCart = () => readFile(CART, 'utf-8')
     return JSON.parse(cartFile)
   });
 const readGoods = () => readFile(GOODS, 'utf-8')
-  .then((cartFile) => {
-    return JSON.parse(cartFile)
+  .then((goodsFile) => {
+    return JSON.parse(goodsFile)
   });
 
-app.get('/cart', (req, res) => {
-
-  Promise.all([
-    readCart(),
-    readGoods()
-  ]).then(([cartList, goodsList]) => {
-    return cartList.map((cartItem) => {
-      const goodsItem = goodsList.find(({ id_product: goodsId }) => {
-        return goodsId === cartItem.id_product
-      });
+function getReformBasket() {
+  return Promise.all([
+    readGoods(),
+    readCart()
+  ]).then(([goodsList, cartList]) => {
+    const result = cartList.map((cartItem) => {
+      const { id_product: _cartItemId } = cartItem;
+      const goodsItem = goodsList.find(({ id_product: _goodsItemId }) =>
+      _goodsItemId == _cartItemId);
       return {
         ...cartItem,
         ...goodsItem
       }
     })
-  }).then((result) => {
-    res.send(JSON.stringify(result))
-  })
+    return result
+  });
+}
 
+app.post('/cart', (res, req) => {
+
+  readCart().then((cartList) => {
+    const cartItem = cartList.find(({ id_product: _id }) => _id === res.body.id);
+    if (!cartItem) {
+      cartList.push({
+        id_product: res.body.id,
+        quantity: 1,
+      })
+    } else {
+      cartList = cartList.map((cartItem) => {
+        if (cartItem.id_product === res.body.id) {
+          return {
+            ...cartItem,
+            quantity: cartItem.quantity + 1
+          }
+        } else {
+          return cartItem
+        }
+      })
+    }
+    return writeFile(CART, JSON.stringify(cartList)).then(() => {
+      return getReformBasket()
+    }).then((result) => {
+      req.send(result)
+    })
+  })
+});
+
+app.delete('/cart', (res, req) => {
+  readCart().then((cartList) => {
+    const cartItem = cartList.find(({ id_product: _id }) => _id === res.body.id);
+      if (cartItem.quantity === 1) {
+        cartList = cartList.filter(({ id_product: _id }) => _id !== res.body.id);
+      } else {
+        cartList = cartList.map((cartItem) => {
+          if (cartItem.id_product === res.body.id) {
+            return {
+              ...cartItem,
+              quantity: cartItem.quantity - 1
+            }
+          } else {
+            return cartItem
+          }
+        })
+      }
+      return writeFile(CART, JSON.stringify(cartList)).then(() => {
+        return getReformBasket()
+      }).then((result) => {
+        req.send(result)
+      })
+  })
+});
+
+app.get('/cart', (res, req) => {
+  getReformBasket().then((result) => {
+    req.send(JSON.stringify(result))
+  })
 });
   
 app.listen('8000', () => {
